@@ -58,7 +58,7 @@ int classifyIPAddress(const string& ip) {
 }
 
 // Function to process a list of IP addresses
-vector<int> classifyIPAddresses(const vector<string>& ip_addresses) {
+vector<int> getRegions(vector<string> ip_addresses) {
     vector<int> classifications;
     
     for (const string& ip : ip_addresses) {
