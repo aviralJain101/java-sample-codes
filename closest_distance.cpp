@@ -6,7 +6,7 @@ using namespace std;
 class Point 
 { 
 	public:
-	int x, y; 
+	long x, y; 
 }; 
 
 int compareX(const void* a, const void* b) 
@@ -21,16 +21,16 @@ int compareY(const void* a, const void* b)
 	return (p1->y - p2->y); 
 } 
 
-float dist(Point p1, Point p2) 
+long dist(Point p1, Point p2) 
 { 
 	return ( (p1.x - p2.x)*(p1.x - p2.x) + 
 				(p1.y - p2.y)*(p1.y - p2.y) 
 			); 
 } 
 
-float bruteForce(Point P[], int n) 
+long bruteForce(Point P[], int n) 
 { 
-	float min = FLT_MAX; 
+	long min = LONG_MAX; 
 	for (int i = 0; i < n; ++i) 
 		for (int j = i+1; j < n; ++j) 
 			if (dist(P[i], P[j]) < min) 
@@ -38,14 +38,14 @@ float bruteForce(Point P[], int n)
 	return min; 
 } 
 
-float min(float x, float y) 
+long min(long x, long y) 
 { 
 	return (x < y)? x : y; 
 } 
 
-float stripClosest(Point strip[], int size, float d) 
+long stripClosest(Point strip[], int size, long d) 
 { 
-	float min = d;
+	long min = d;
 
 	qsort(strip, size, sizeof(Point), compareY); 
 	for (int i = 0; i < size; ++i) 
@@ -56,7 +56,7 @@ float stripClosest(Point strip[], int size, float d)
 	return min; 
 } 
 
-float closestUtil(Point P[], int n) 
+long closestUtil(Point P[], int n) 
 { 
 	if (n <= 3) 
 		return bruteForce(P, n); 
@@ -64,10 +64,10 @@ float closestUtil(Point P[], int n)
 	int mid = n/2; 
 	Point midPoint = P[mid]; 
 
-	float dl = closestUtil(P, mid); 
-	float dr = closestUtil(P + mid, n - mid); 
+	long dl = closestUtil(P, mid); 
+	long dr = closestUtil(P + mid, n - mid); 
 
-	float d = min(dl, dr); 
+	long d = min(dl, dr); 
 
 	Point strip[n]; 
 	int j = 0; 
@@ -78,7 +78,7 @@ float closestUtil(Point P[], int n)
 	return min(d, stripClosest(strip, j, d) ); 
 } 
 
-float closest(Point P[], int n) 
+long closest(Point P[], int n) 
 { 
 	qsort(P, n, sizeof(Point), compareX); 
 
@@ -89,7 +89,14 @@ long closestSquaredDistance(vector<int> x, vector<int> y){
     int n=x.size();
     Point P[n];
     for(int i = 0; i < n; i++){
-        P[i] = {x[i], y[i]};
+        P[i] = {(long)x[i], (long)y[i]};
     }
-    return (long)closest(P, n);
+    return closest(P, n);
+}
+
+int main(){
+    vector<int> x={77, 1000, 992, 1000000};
+    vector<int> y={0, 1000, 500, 0};
+    cout<<closestSquaredDistance(x, y);
+    
 }
