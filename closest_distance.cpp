@@ -86,10 +86,10 @@ float closest(Point P[], int n)
 } 
 
 long closestSquaredDistance(vector<int> x, vector<int> y){
-    vector<Point> P;
+    int P[n];
     int n = x.size();
     for(int i = 0; i < n; i++){
-        P.push_back({x[i], y[i]});
+        P[i] = {x[i], y[i]};
     }
     return (long)closest(P, n);
 }
