@@ -23,7 +23,7 @@ int compareY(const void* a, const void* b)
 
 float dist(Point p1, Point p2) 
 { 
-	return sqrt( (p1.x - p2.x)*(p1.x - p2.x) + 
+	return ( (p1.x - p2.x)*(p1.x - p2.x) + 
 				(p1.y - p2.y)*(p1.y - p2.y) 
 			); 
 } 
