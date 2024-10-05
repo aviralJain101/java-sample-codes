@@ -5,34 +5,35 @@
 
 using namespace std;
 
+// Function to handle piece type 'L'
 int pieceTypeL(const vector<int>& columns, int base, int occurrencesBase, int basePosition) {
     int nodesMinHeight = INT_MAX;
-    for (int col : columns) {
-        if (col != base) {
-            nodesMinHeight = min(nodesMinHeight, col);
+    for (int n : columns) {
+        if (n != base) {
+            nodesMinHeight = min(nodesMinHeight, n);
         }
     }
 
     if (occurrencesBase == 1 && columns[basePosition - 1] == 2) {
-        return 1;  // Placeholder for "TODO"
+        return -1;  // Placeholder for "TODO"
     } else if (occurrencesBase == 1) {
-        return 1;  // Placeholder for "TODO"
+        return -1;  // Placeholder for "TODO"
     } else {
         return 0;
     }
 }
 
+// Function to handle piece type 'J'
 int pieceTypeJ(const vector<int>& columns, int base, int occurrencesBase, int basePosition) {
     if (occurrencesBase == 2 &&
         (columns[basePosition + 1] == base || columns[basePosition - 1] == base)) {
         return 1;
     } else if (occurrencesBase == 1) {
         int borderMinHeight = min(columns[basePosition - 1], columns[basePosition + 1]);
-
         int nodesMinHeight = INT_MAX;
-        for (int col : columns) {
-            if (col != base) {
-                nodesMinHeight = min(nodesMinHeight, col);
+        for (int n : columns) {
+            if (n != base) {
+                nodesMinHeight = min(nodesMinHeight, n);
             }
         }
 
@@ -46,54 +47,64 @@ int pieceTypeJ(const vector<int>& columns, int base, int occurrencesBase, int ba
     }
 }
 
+// Function to handle piece type 'I'
 int pieceTypeI(const vector<int>& columns, int base, int occurrencesBase) {
     if (occurrencesBase == 1) {
-        int minHeight = INT_MAX;
-        for (int col : columns) {
-            if (col != base) {
-                minHeight = min(minHeight, col);
+        int nodesMinHeight = INT_MAX;
+        for (int n : columns) {
+            if (n != base) {
+                nodesMinHeight = min(nodesMinHeight, n);
             }
         }
-        return minHeight;
+        return nodesMinHeight;
     } else {
         return 0;
     }
 }
 
+// Process piece based on type
 int processPiece(char piece, const vector<int>& columns, int base, int occurrencesBase, int basePosition) {
     switch (piece) {
         case 'I':
             return pieceTypeI(columns, base, occurrencesBase);
         case 'J':
             return pieceTypeJ(columns, base, occurrencesBase, basePosition);
-        // Add case for 'L' or other pieces if needed
+        case 'L':
+            return pieceTypeL(columns, base, occurrencesBase, basePosition);
         default:
             return 0;
     }
 }
 
+// Main TetrisMove function
 int TetrisMove(vector<string> strArr) {
-    char piece = strArr[0][0];
+    char piece = strArr[0][0];  // Extract piece type (first element)
+    
+    // Convert the remaining elements to integers (board columns)
     vector<int> columns;
-
-    // Convert the rest of the input to integers for the column heights
     for (size_t i = 1; i < strArr.size(); ++i) {
         columns.push_back(stoi(strArr[i]));
     }
 
+    // Find the base (minimum height) and its occurrences
     int base = *min_element(columns.begin(), columns.end());
     int occurrencesBase = count(columns.begin(), columns.end(), base);
     int basePosition = find(columns.begin(), columns.end(), base) - columns.begin();
-    
-    bool baseSize = (occurrencesBase >= 2 &&
-                    (columns[basePosition - 1] == base || columns[basePosition + 1] == base));
-
-    cout << "piece: " << piece << endl;
-    cout << "occurrencesBase: " << occurrencesBase << endl;
-    cout << "baseSize: " << baseSize << endl;
-    cout << "columns[basePosition-1]: " << columns[basePosition - 1] << endl;
-    cout << "columns[basePosition+1]: " << columns[basePosition + 1] << endl;
-    cout << "base: " << base << endl;
 
     if (occurrencesBase >= 1 && occurrencesBase < 3) {
-        return processPiece(piece, columns, base, occurrencesBase, basePosition​⬤
+        return processPiece(piece, columns, base, occurrencesBase, basePosition);
+    } else {
+        return 0;
+    }
+}
+
+int main() {
+    // Example inputs
+    vector<string> inputL = {"L", "3", "4", "4", "5", "6", "2", "0", "6", "5", "3", "6", "6"};
+    vector<string> inputI = {"I", "2", "4", "3", "4", "5", "2", "0", "2", "2", "3", "3", "3"};
+    vector<string> inputJ = {"J", "5", "6", "7", "8", "6", "7", "0", "5", "5", "8", "7", "9"};
+
+    cout << "Answer for inputJ: " << TetrisMove(inputJ) << endl;
+
+    return 0;
+}
