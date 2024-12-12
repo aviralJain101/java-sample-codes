@@ -1,3 +1,6 @@
+#include<bits/stdc++.h>
+using namespace std;
+
 class LFUCache {
     int capacity;
     int minFreq;
@@ -47,3 +50,29 @@ public:
         minFreq = 1;
     }
 };
+
+vector<int> getKeyAndValue(string s){
+    vector<int> res;
+    stringstream ss(s);
+    string word;
+    while (ss >> word) {
+        if (isdigit(word[0])) {
+            res.push_back(stoi(word));
+        }
+    }
+    return res;
+}
+
+vector<int> implementLFU(int cacheSize, vector<string> queries){
+    vector<int> ans;
+    LFUCache cache=LFUCache(cacheSize);
+    for (const auto& str : queries) {
+        vector<int> keyValue=getKeyAndValue(str);
+        if(str[0]=='P'){
+            cache.put(keyValue[0], keyValue[1]);
+        }else{
+            ans.push_back(cache.get(keyValue[0]));
+        }
+    }
+    return ans;
+}
